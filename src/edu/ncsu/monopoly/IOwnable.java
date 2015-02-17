@@ -10,7 +10,7 @@ public interface IOwnable {
 
 	public abstract boolean isAvailable();
 
-	public abstract void playAction();
+	public abstract boolean playAction(String msg);
 
 	public abstract void setAvailable(boolean available);
 

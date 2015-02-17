@@ -6,7 +6,6 @@ public class PropertyCell extends Cell {
 	private int numHouses;
 	private int rent;
 	private int sellPrice;
-
 	public String getColorGroup() {
 		return colorGroup;
 	}
@@ -25,19 +24,24 @@ public class PropertyCell extends Cell {
 
 	public int getRent() {
 		int rentToCharge = rent;
-		String [] monopolies = owner.getMonopolies();
-		for(int i = 0; i < monopolies.length; i++) {
-			if(monopolies[i].equals(colorGroup)) {
-				rentToCharge = rent * 2;
-			}
-		}
+		rentToCharge = calcMonopoliesRent(rentToCharge);
 		if(numHouses > 0) {
 			rentToCharge = rent * (numHouses + 1);
 		}
 		return rentToCharge;
 	}
 
-	public void playAction() {
+	private int calcMonopoliesRent(int rentToCharge) {
+		String [] monopolies = owner.getMonopolies();
+		for(int i = 0; i < monopolies.length; i++) {
+			if(monopolies[i].equals(colorGroup)) {
+				rentToCharge = rent * 2;
+			}
+		}
+		return rentToCharge;
+	}
+
+	public boolean playAction(String msg) {
 		Player currentPlayer = null;
 		if(!isAvailable()) {
 			currentPlayer = GameMaster.instance().getCurrentPlayer();
@@ -45,6 +49,7 @@ public class PropertyCell extends Cell {
 				currentPlayer.payRentTo(owner, getRent());
 			}
 		}
+		return false;
 	}
 
 	public void setColorGroup(String colorGroup) {
