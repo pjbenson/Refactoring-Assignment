@@ -39,8 +39,10 @@ public class GameMaster {
         IOwnableCard card = null;
         if(cell.getType() == Card.TYPE_CC) {
             card = getGameBoard().drawCCCard();
+            
         } else {
             card = getGameBoard().drawChanceCard();
+            
         }
         card.applyAction();
         gui.setEndTurnEnabled(true);
@@ -210,6 +212,11 @@ public class GameMaster {
 	public void playerMoved(Player player) {
 		IOwnableCell cell = player.getPosition();
 		int playerIndex = getPlayerIndex(player);
+		setGui(player, cell, playerIndex);
+        gui.setTradeEnabled(turn, false);
+	}
+
+	protected void setGui(Player player, IOwnableCell cell, int playerIndex) {
 		if(cell instanceof CardCell) {
 		    gui.setDrawCardEnabled(true);
 		} else{
@@ -221,7 +228,6 @@ public class GameMaster {
 			}	
 			gui.enableEndTurnBtn(playerIndex);
 		}
-        gui.setTradeEnabled(turn, false);
 	}
 
 	public void reset() {
