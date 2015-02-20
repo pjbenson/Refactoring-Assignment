@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class GoToJailCardTest extends TestCase {
     GameMaster gameMaster;
-    Card jailCard = new JailCard(Card.TYPE_CC);
+    IOwnableCard jailCard = new JailCard(Card.TYPE_CC);
     
     protected void setUp() {
 		gameMaster = GameMaster.instance();
@@ -16,10 +16,10 @@ public class GoToJailCardTest extends TestCase {
     }
     
     public void testJailCardAction() {
-		Card card = gameMaster.drawCCCard();
+		IOwnableCard card = gameMaster.drawCCCard();
 		assertEquals(jailCard, card);
 		card.applyAction();
-		IOwnable cell = gameMaster.getCurrentPlayer().getPosition();
+		IOwnableCell cell = gameMaster.getCurrentPlayer().getPosition();
 		assertEquals(gameMaster.getGameBoard().queryCell("Jail"), cell);
     }
     
@@ -34,7 +34,7 @@ public class GoToJailCardTest extends TestCase {
         assertFalse(gameMaster.getGUI().isEndTurnButtonEnabled());
         gameMaster.btnDrawCardClicked();
         assertFalse(gameMaster.getGUI().isDrawCardButtonEnabled());
-		IOwnable cell = gameMaster.getCurrentPlayer().getPosition();
+		IOwnableCell cell = gameMaster.getCurrentPlayer().getPosition();
 		assertEquals(gameMaster.getGameBoard().queryCell("Jail"), cell);
 		assertTrue(gameMaster.getGUI().isEndTurnButtonEnabled());
     }

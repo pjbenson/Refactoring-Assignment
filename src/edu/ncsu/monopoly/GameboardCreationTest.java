@@ -10,7 +10,7 @@ import edu.ncsu.monopoly.gui.GameBoardUtil;
 public class GameboardCreationTest extends TestCase{
 	
 	public void testCellAddOrder() {
-		GameBoard board = new SimpleGameBoard();
+		IOwnableGameBoard board = new SimpleGameBoard();
 		List northCells = GameBoardUtil.getNorthCells(board);
 		assertEquals(3, northCells.size());
 		assertSame(board.queryCell("Blue 3"), northCells.get(0));
@@ -28,7 +28,7 @@ public class GameboardCreationTest extends TestCase{
 	}
 	
 	public void testCellAddOrder14() {
-		GameBoard board = new GameBoard14();
+		IOwnableGameBoard board = new GameBoard14();
 		List northCells = GameBoardUtil.getNorthCells(board);
 		assertEquals(5, northCells.size());
 		assertSame(board.queryCell("Red 1"), northCells.get(0));

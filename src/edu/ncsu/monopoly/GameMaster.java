@@ -9,7 +9,7 @@ public class GameMaster {
 	private static GameMaster gameMaster;
 	static final public int MAX_PLAYER = 8;	
 	private Die[] dice;
-	private GameBoard gameBoard;
+	private IOwnableGameBoard gameBoard;
 	private MonopolyGUI gui;
 	private int initAmountOfMoney;
 	private ArrayList players = new ArrayList();
@@ -33,24 +33,23 @@ public class GameMaster {
         gui.showBuyHouseDialog(getCurrentPlayer());
     }
 
-    public Card btnDrawCardClicked() {
+    public IOwnableCard btnDrawCardClicked() {
         gui.setDrawCardEnabled(false);
         CardCell cell = (CardCell)getCurrentPlayer().getPosition();
-        Card card = null;
+        IOwnableCard card = null;
         if(cell.getType() == Card.TYPE_CC) {
             card = getGameBoard().drawCCCard();
-            card.applyAction();
         } else {
             card = getGameBoard().drawChanceCard();
-            card.applyAction();
         }
+        card.applyAction();
         gui.setEndTurnEnabled(true);
         return card;
     }
 
     public void btnEndTurnClicked() {
 		setAllButtonEnabled(false);
-		getCurrentPlayer().getPosition().playAction(null);
+		getCurrentPlayer().getPosition().playAction();
 		if(getCurrentPlayer().isBankrupt()) {
 			gui.setBuyHouseEnabled(false);
 			gui.setDrawCardEnabled(false);
@@ -123,16 +122,16 @@ public class GameMaster {
 
     public void completeTrade(TradeDeal deal) {
         Player seller = getPlayer(deal.getPlayerIndex());
-        IOwnable property = gameBoard.queryCell(deal.getPropertyName());
+        IOwnableCell property = gameBoard.queryCell(deal.getPropertyName());
         seller.sellProperty(property, deal.getAmount());
         getCurrentPlayer().buyProperty(property, deal.getAmount());
     }
 
-    public Card drawCCCard() {
+    public IOwnableCard drawCCCard() {
         return gameBoard.drawCCCard();
     }
 
-    public Card drawChanceCard() {
+    public IOwnableCard drawChanceCard() {
         return gameBoard.drawChanceCard();
     }
 
@@ -145,7 +144,7 @@ public class GameMaster {
         return turn;
     }
 
-	public GameBoard getGameBoard() {
+	public IOwnableGameBoard getGameBoard() {
 		return gameBoard;
 	}
 
@@ -196,7 +195,7 @@ public class GameMaster {
 	}
 	
 	public void movePlayer(Player player, int diceValue) {
-		IOwnable currentPosition = player.getPosition();
+		IOwnableCell currentPosition = player.getPosition();
 		int positionIndex = gameBoard.queryCellIndex(currentPosition.getName());
 		int newIndex = (positionIndex+diceValue)%gameBoard.getCellNumber();
 		if(newIndex <= positionIndex || diceValue > gameBoard.getCellNumber()) {
@@ -209,7 +208,7 @@ public class GameMaster {
 	}
 
 	public void playerMoved(Player player) {
-		IOwnable cell = player.getPosition();
+		IOwnableCell cell = player.getPosition();
 		int playerIndex = getPlayerIndex(player);
 		if(cell instanceof CardCell) {
 		    gui.setDrawCardEnabled(true);
@@ -267,7 +266,7 @@ public class GameMaster {
         gui.setGetOutOfJailEnabled(enabled);
 	}
 
-	public void setGameBoard(GameBoard board) {
+	public void setGameBoard(IOwnableGameBoard board) {
 		this.gameBoard = board;
 	}
 	

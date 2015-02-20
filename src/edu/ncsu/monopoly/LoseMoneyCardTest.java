@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class LoseMoneyCardTest extends TestCase {
     GameMaster gameMaster;
-    Card loseMoneyCard;
+    IOwnableCard loseMoneyCard;
 
     protected void setUp() {
 		gameMaster = GameMaster.instance();
@@ -18,7 +18,7 @@ public class LoseMoneyCardTest extends TestCase {
     
     public void testLoseMoneyCardAction() {
         int origMoney = gameMaster.getCurrentPlayer().getMoney();
-		Card card = gameMaster.drawCCCard();
+		IOwnableCard card = gameMaster.drawCCCard();
 		assertEquals(loseMoneyCard, card);
 		card.applyAction();
 		assertEquals(origMoney - 20, gameMaster.getCurrentPlayer().getMoney());

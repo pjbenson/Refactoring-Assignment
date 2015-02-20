@@ -22,16 +22,20 @@ public class UtilityCell extends Cell {
 		return 0;
 	}
 
-	public boolean playAction(String msg) {
+	public void playAction() {
 		Player currentPlayer = null;
 		if(!isAvailable()) {
-			currentPlayer = GameMaster.instance().getCurrentPlayer();
-			if(owner != currentPlayer) {
-				GameMaster.instance().utilRollDice();
-				int diceRoll = GameMaster.instance().getUtilDiceRoll();
-				currentPlayer.payRentTo(owner, getRent(diceRoll));
-			}
+			payRent();
 		}
-		return false;
+	}
+
+	private void payRent() {
+		Player currentPlayer;
+		currentPlayer = GameMaster.instance().getCurrentPlayer();
+		if(owner != currentPlayer) {
+			GameMaster.instance().utilRollDice();
+			int diceRoll = GameMaster.instance().getUtilDiceRoll();
+			currentPlayer.payRentTo(owner, getRent(diceRoll));
+		}
 	}
 }

@@ -3,7 +3,7 @@ package edu.ncsu.monopoly;
 import junit.framework.TestCase;
 
 public class CardsTest extends TestCase {
-    Card ccCard, chanceCard;
+    IOwnableCard ccCard, chanceCard;
     
     GameMaster gameMaster;
 
@@ -19,7 +19,7 @@ public class CardsTest extends TestCase {
     }
     
     public void testCardType() {
-        Card card = gameMaster.drawCCCard();
+        IOwnableCard card = gameMaster.drawCCCard();
         assertEquals(Card.TYPE_CC, ccCard.getCardType());
         card = gameMaster.drawChanceCard();
         assertEquals(Card.TYPE_CHANCE, chanceCard.getCardType());

@@ -1,12 +1,12 @@
 package edu.ncsu.monopoly.gui;
 
-import edu.ncsu.monopoly.IOwnable;
+import edu.ncsu.monopoly.IOwnableCell;
 
 public class GotoJailCellInfoFormatter implements CellInfoFormatter {
 
     public static final String GOTO_JAIL_LABEL = "<html><b>Go to Jail</b></html>";
 
-    public String format(IOwnable cell) {
+    public String format(IOwnableCell cell) {
     	return GOTO_JAIL_LABEL;
 	}
 }

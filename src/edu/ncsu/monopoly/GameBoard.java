@@ -3,7 +3,7 @@ package edu.ncsu.monopoly;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class GameBoard {
+public class GameBoard implements IOwnableGameBoard {
 
 	private ArrayList cells = new ArrayList();
     private ArrayList chanceCards = new ArrayList();
@@ -13,11 +13,15 @@ public class GameBoard {
 	private GameMaster gameMaster;
 	
 	public GameBoard() {
-		IOwnable go = new GoCell();
+		IOwnableCell go = new GoCell();
 		addCell(go);
 	}
 
-    public void addCard(Card card) {
+    /* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#addCard(edu.ncsu.monopoly.Card)
+	 */
+    @Override
+	public void addCard(IOwnableCard card) {
         if(card.getCardType() == Card.TYPE_CC) {
             communityChestCards.add(card);
         } else {
@@ -25,10 +29,18 @@ public class GameBoard {
         }
     }
 	
-	public void addCell(IOwnable cell) {
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#addCell(edu.ncsu.monopoly.IOwnable)
+	 */
+	@Override
+	public void addCell(IOwnableCell cell) {
 		cells.add(cell);
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#addCell(edu.ncsu.monopoly.PropertyCell)
+	 */
+	@Override
 	public void addCell(PropertyCell cell) {
 		String colorGroup = cell.getColorGroup();
 		int propertyNumber = getPropertyNumberForColor(colorGroup);
@@ -36,34 +48,53 @@ public class GameBoard {
         cells.add(cell);
 	}
 
-    public Card drawCCCard() {
-        Card card = (Card)communityChestCards.get(0);
+    /* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#drawCCCard()
+	 */
+    @Override
+	public IOwnableCard drawCCCard() {
+        IOwnableCard card = (IOwnableCard)communityChestCards.get(0);
         communityChestCards.remove(0);
         addCard(card);
         return card;
     }
 
-    public Card drawChanceCard() {
-        Card card = (Card)chanceCards.get(0);
+    /* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#drawChanceCard()
+	 */
+    @Override
+	public IOwnableCard drawChanceCard() {
+        IOwnableCard card = (IOwnableCard)chanceCards.get(0);
         chanceCards.remove(0);
         addCard(card);
         return card;
     }
 
-	public IOwnable getCell(int newIndex) {
-		return (IOwnable)cells.get(newIndex);
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#getCell(int)
+	 */
+	@Override
+	public IOwnableCell getCell(int newIndex) {
+		return (IOwnableCell)cells.get(newIndex);
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#getCellNumber()
+	 */
+	@Override
 	public int getCellNumber() {
 		return cells.size();
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#getPropertiesInMonopoly(java.lang.String)
+	 */
+	@Override
 	public PropertyCell[] getPropertiesInMonopoly(String color) {
-		PropertyCell[] monopolyCells = 
-			new PropertyCell[getPropertyNumberForColor(color)];
+		PropertyCell[] monopolyCells = new PropertyCell[getPropertyNumberForColor(color)];
 		int counter = 0;
 		for (int i = 0; i < getCellNumber(); i++) {
-			IOwnable c = getCell(i);
+			IOwnableCell c = getCell(i);
 			if(c instanceof PropertyCell) {
 				PropertyCell pc = (PropertyCell)c;
 				if(pc.getColorGroup().equals(color)) {
@@ -75,6 +106,10 @@ public class GameBoard {
 		return monopolyCells;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#getPropertyNumberForColor(java.lang.String)
+	 */
+	@Override
 	public int getPropertyNumberForColor(String name) {
 		Integer number = (Integer)colorGroups.get(name);
 		if(number != null) {
@@ -83,9 +118,13 @@ public class GameBoard {
 		return 0;
 	}
 
-	public IOwnable queryCell(String string) {
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#queryCell(java.lang.String)
+	 */
+	@Override
+	public IOwnableCell queryCell(String string) {
 		for(int i = 0; i < cells.size(); i++){
-			IOwnable temp = (IOwnable)cells.get(i); 
+			IOwnableCell temp = (IOwnableCell)cells.get(i); 
 			if(temp.getName().equals(string)) {
 				return temp;
 			}
@@ -93,9 +132,13 @@ public class GameBoard {
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#queryCellIndex(java.lang.String)
+	 */
+	@Override
 	public int queryCellIndex(String string){
 		for(int i = 0; i < cells.size(); i++){
-			IOwnable temp = (IOwnable)cells.get(i); 
+			IOwnableCell temp = (IOwnableCell)cells.get(i); 
 			if(temp.getName().equals(string)) {
 				return i;
 			}
@@ -103,7 +146,11 @@ public class GameBoard {
 		return -1;
 	}
 
-    public void removeCards() {
+    /* (non-Javadoc)
+	 * @see edu.ncsu.monopoly.IGameBoard#removeCards()
+	 */
+    @Override
+	public void removeCards() {
         communityChestCards.clear();
     }
 }

@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ncsu.monopoly.GameBoard;
+import edu.ncsu.monopoly.IOwnableGameBoard;
 
 public class GameBoardUtil {
     
@@ -15,7 +15,7 @@ public class GameBoardUtil {
 		return new Dimension(longSide, shortSide);
 	}
 	
-	public static List getEastCells(GameBoard board) {
+	public static List getEastCells(IOwnableGameBoard board) {
 		Dimension d = calculateDimension(board.getCellNumber());
 		int longSide = d.width;
 		int shortSide = d.height;
@@ -26,7 +26,7 @@ public class GameBoardUtil {
 		return cells;
 	}
 	
-	public static List getNorthCells(GameBoard board) {
+	public static List getNorthCells(IOwnableGameBoard board) {
 		Dimension d = calculateDimension(board.getCellNumber());
 		int longSide = d.width;
 		int shortSide = d.height;
@@ -37,7 +37,7 @@ public class GameBoardUtil {
 		return cells;
 	}
 	
-	public static List getSouthCells(GameBoard board) {
+	public static List getSouthCells(IOwnableGameBoard board) {
 		Dimension d = calculateDimension(board.getCellNumber());
 		int longSide = d.width;
 		int shortSide = d.height;
@@ -48,7 +48,7 @@ public class GameBoardUtil {
 		return cells;
 	}
 	
-	public static List getWestCells(GameBoard board) {
+	public static List getWestCells(IOwnableGameBoard board) {
 		Dimension d = calculateDimension(board.getCellNumber());
 		int longSide = d.width;
 		int shortSide = d.height;

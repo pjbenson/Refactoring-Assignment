@@ -31,16 +31,7 @@ public class GUITradeDialog extends JDialog implements TradeDialog {
         buildSellersCombo();
         setModal(true);
              
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new GridLayout(4, 2));
-        contentPane.add(new JLabel("Sellers"));
-        contentPane.add(cboSellers);
-        contentPane.add(new JLabel("Properties"));
-        contentPane.add(cboProperties);
-        contentPane.add(new JLabel("Amount"));
-        contentPane.add(txtAmount);
-        contentPane.add(btnOK);
-        contentPane.add(btnCancel);
+        initContentPane();
         
         btnCancel.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -65,7 +56,7 @@ public class GUITradeDialog extends JDialog implements TradeDialog {
                             "Amount should be an integer", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                IOwnable cell = (IOwnable)cboProperties.getSelectedItem();
+                IOwnableCell cell = (IOwnableCell)cboProperties.getSelectedItem();
                 if(cell == null) return;
                 Player player = (Player)cboSellers.getSelectedItem();
                 Player currentPlayer = GameMaster.instance().getCurrentPlayer();
@@ -81,6 +72,19 @@ public class GUITradeDialog extends JDialog implements TradeDialog {
         
         this.pack();
     }
+
+	private void initContentPane() {
+		Container contentPane = getContentPane();
+        contentPane.setLayout(new GridLayout(4, 2));
+        contentPane.add(new JLabel("Sellers"));
+        contentPane.add(cboSellers);
+        contentPane.add(new JLabel("Properties"));
+        contentPane.add(cboProperties);
+        contentPane.add(new JLabel("Amount"));
+        contentPane.add(txtAmount);
+        contentPane.add(btnOK);
+        contentPane.add(btnCancel);
+	}
 
     private void buildSellersCombo() {
         List sellers = GameMaster.instance().getSellerList();
@@ -99,7 +103,7 @@ public class GUITradeDialog extends JDialog implements TradeDialog {
 
     private void updatePropertiesCombo(Player player) {
         cboProperties.removeAllItems();
-        IOwnable[] cells = player.getAllProperties();
+        IOwnableCell[] cells = player.getAllProperties();
         btnOK.setEnabled(cells.length > 0);
         for (int i = 0; i < cells.length; i++) {
             cboProperties.addItem(cells[i]);

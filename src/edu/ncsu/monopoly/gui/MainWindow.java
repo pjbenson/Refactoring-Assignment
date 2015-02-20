@@ -28,20 +28,14 @@ public class MainWindow extends JFrame implements MonopolyGUI{
 	JPanel westPanel = new JPanel();
 
 	public MainWindow() {
-		northPanel.setBorder(new LineBorder(Color.BLACK));
-		southPanel.setBorder(new LineBorder(Color.BLACK));
-		westPanel.setBorder(new LineBorder(Color.BLACK));
-		eastPanel.setBorder(new LineBorder(Color.BLACK));
+		setBorders();
 		
 		Container c = getContentPane();
 		//setSize(800, 600);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension d = tk.getScreenSize();
 		setSize(d);
-		c.add(northPanel, BorderLayout.NORTH);
-		c.add(southPanel, BorderLayout.SOUTH);
-		c.add(eastPanel, BorderLayout.EAST);
-		c.add(westPanel, BorderLayout.WEST);
+		addPanels(c);
 		
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) {
@@ -49,10 +43,24 @@ public class MainWindow extends JFrame implements MonopolyGUI{
 			}
 		});
 	}
+
+	private void addPanels(Container c) {
+		c.add(northPanel, BorderLayout.NORTH);
+		c.add(southPanel, BorderLayout.SOUTH);
+		c.add(eastPanel, BorderLayout.EAST);
+		c.add(westPanel, BorderLayout.WEST);
+	}
+
+	private void setBorders() {
+		northPanel.setBorder(new LineBorder(Color.BLACK));
+		southPanel.setBorder(new LineBorder(Color.BLACK));
+		westPanel.setBorder(new LineBorder(Color.BLACK));
+		eastPanel.setBorder(new LineBorder(Color.BLACK));
+	}
 	
 	private void addCells(JPanel panel, List cells) {
 		for(int x=0; x<cells.size(); x++) {
-			GUICell cell = new GUICell((IOwnable)cells.get(x));
+			GUICell cell = new GUICell((IOwnableCell)cells.get(x));
 			panel.add(cell);
 			guiCells.add(cell);
 		}
@@ -131,7 +139,7 @@ public class MainWindow extends JFrame implements MonopolyGUI{
     }
 	
 	private GUICell queryCell(int index) {
-		IOwnable cell = GameMaster.instance().getGameBoard().getCell(index);
+		IOwnableCell cell = GameMaster.instance().getGameBoard().getCell(index);
 		for(int x = 0; x < guiCells.size(); x++) {
 			GUICell guiCell = (GUICell)guiCells.get(x);
 			if(guiCell.getCell() == cell) return guiCell;
@@ -173,7 +181,7 @@ public class MainWindow extends JFrame implements MonopolyGUI{
         playerPanels[index].setTradeEnabled(b);
     }
 	
-	public void setupGameBoard(GameBoard board) {
+	public void setupGameBoard(IOwnableGameBoard board) {
 		Dimension dimension = GameBoardUtil.calculateDimension(board.getCellNumber());
 		northPanel.setLayout(new GridLayout(1, dimension.width + 2));
 		southPanel.setLayout(new GridLayout(1, dimension.width + 2));

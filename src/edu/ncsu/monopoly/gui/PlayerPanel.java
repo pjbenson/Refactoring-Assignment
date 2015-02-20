@@ -49,45 +49,19 @@ public class PlayerPanel extends JPanel {
 
         txtProperty.setEnabled(false);
 
-        JPanel pnlName = new JPanel();
-        JPanel pnlProperties = new JPanel();
-
-        pnlInfo.setLayout(new BorderLayout());
-        pnlInfo.add(pnlName, BorderLayout.NORTH);
-        pnlInfo.add(pnlProperties, BorderLayout.CENTER);
-
-        pnlProperties.setLayout(new OverlayLayout(pnlProperties));
-
-        pnlName.add(lblName);
-        pnlName.add(lblMoney);
-        pnlProperties.add(txtProperty);
-
-        pnlAction.setLayout(new GridLayout(3, 3));
-        pnlAction.add(btnBuyHouse);
-        pnlAction.add(btnRollDice);
-        pnlAction.add(btnPurchaseProperty);
-        pnlAction.add(btnGetOutOfJail);
-        pnlAction.add(btnEndTurn);
-        pnlAction.add(btnDrawCard);
-        pnlAction.add(btnTrade);
-
-        pnlAction.doLayout();
-        pnlInfo.doLayout();
-        pnlName.doLayout();
-        pnlProperties.doLayout();
+        JPanel pnlName = initPnLName();
+        JPanel pnlProperties = initPnLProperties();
+        initPnLAction(pnlAction);
+        initPnLInfo(pnlInfo, pnlName, pnlProperties);
+        
+        
         this.doLayout();
 
         setLayout(new BorderLayout());
         add(pnlInfo, BorderLayout.CENTER);
         add(pnlAction, BorderLayout.SOUTH);
 
-        btnRollDice.setEnabled(false);
-        btnPurchaseProperty.setEnabled(false);
-        btnEndTurn.setEnabled(false);
-        btnBuyHouse.setEnabled(false);
-        btnGetOutOfJail.setEnabled(false);
-        btnDrawCard.setEnabled(false);
-        btnTrade.setEnabled(false);
+        enableButtons();
 
         setBorder(new BevelBorder(BevelBorder.RAISED));
 
@@ -123,7 +97,7 @@ public class PlayerPanel extends JPanel {
 
         btnDrawCard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Card card = GameMaster.instance().btnDrawCardClicked();
+                IOwnableCard card = GameMaster.instance().btnDrawCardClicked();
                 JOptionPane
                         .showMessageDialog(PlayerPanel.this, card.getLabel());
                 displayInfo();
@@ -137,11 +111,57 @@ public class PlayerPanel extends JPanel {
         });
     }
 
+	private void enableButtons() {
+		btnRollDice.setEnabled(false);
+        btnPurchaseProperty.setEnabled(false);
+        btnEndTurn.setEnabled(false);
+        btnBuyHouse.setEnabled(false);
+        btnGetOutOfJail.setEnabled(false);
+        btnDrawCard.setEnabled(false);
+        btnTrade.setEnabled(false);
+	}
+
+	private JPanel initPnLProperties() {
+		JPanel pnlProperties = new JPanel();
+        pnlProperties.setLayout(new OverlayLayout(pnlProperties));
+        pnlProperties.add(txtProperty);
+        pnlProperties.doLayout();
+		return pnlProperties;
+	}
+
+	private JPanel initPnLName() {
+		JPanel pnlName = new JPanel();
+        pnlName.add(lblName);
+        pnlName.add(lblMoney);
+        pnlName.doLayout();
+		return pnlName;
+	}
+
+	private void initPnLInfo(JPanel pnlInfo, JPanel pnlName,
+			JPanel pnlProperties) {
+		pnlInfo.setLayout(new BorderLayout());
+        pnlInfo.add(pnlName, BorderLayout.NORTH);
+        pnlInfo.add(pnlProperties, BorderLayout.CENTER);
+        pnlInfo.doLayout();
+	}
+
+	private void initPnLAction(JPanel pnlAction) {
+		pnlAction.setLayout(new GridLayout(3, 3));
+        pnlAction.add(btnBuyHouse);
+        pnlAction.add(btnRollDice);
+        pnlAction.add(btnPurchaseProperty);
+        pnlAction.add(btnGetOutOfJail);
+        pnlAction.add(btnEndTurn);
+        pnlAction.add(btnDrawCard);
+        pnlAction.add(btnTrade);
+        pnlAction.doLayout();
+	}
+
     public void displayInfo() {
         lblName.setText(player.getName());
         lblMoney.setText("$ " + player.getMoney());
         StringBuffer buf = new StringBuffer();
-        IOwnable[] cells = player.getAllProperties();
+        IOwnableCell[] cells = player.getAllProperties();
         for (int i = 0; i < cells.length; i++) {
             buf.append(cells[i] + "\n");
         }

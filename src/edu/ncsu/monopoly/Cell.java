@@ -1,6 +1,6 @@
 package edu.ncsu.monopoly;
 
-public abstract class Cell implements IOwnable {
+public abstract class Cell implements IOwnableCell {
 	private String name;
 	protected Player owner;
 	private boolean available = true;
@@ -41,7 +41,7 @@ public abstract class Cell implements IOwnable {
 	 * @see edu.ncsu.monopoly.IOwnable#playAction()
 	 */
 	@Override
-	public abstract boolean playAction(String msg);
+	public abstract void playAction();
 
 	/* (non-Javadoc)
 	 * @see edu.ncsu.monopoly.IOwnable#setAvailable(boolean)

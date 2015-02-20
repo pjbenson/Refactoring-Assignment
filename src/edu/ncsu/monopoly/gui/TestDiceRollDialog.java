@@ -28,12 +28,7 @@ public class TestDiceRollDialog extends JDialog {
         
         setModal(true);
              
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new GridLayout(2, 2));
-        contentPane.add(new JLabel("Amount"));
-        contentPane.add(txtDiceRoll);
-        contentPane.add(btnOK);
-        contentPane.add(btnCancel);
+        initContentPane();
         
         btnCancel.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
@@ -71,6 +66,15 @@ public class TestDiceRollDialog extends JDialog {
         
         this.pack();
     }
+
+	private void initContentPane() {
+		Container contentPane = getContentPane();
+        contentPane.setLayout(new GridLayout(2, 2));
+        contentPane.add(new JLabel("Amount"));
+        contentPane.add(txtDiceRoll);
+        contentPane.add(btnOK);
+        contentPane.add(btnCancel);
+	}
 
     public int[] getDiceRoll() {
         return diceRoll;

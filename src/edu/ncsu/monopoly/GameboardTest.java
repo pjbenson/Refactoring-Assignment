@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 public class GameboardTest extends TestCase {
 
 	Cell cell;
-	GameBoard gameBoard;
+	IOwnableGameBoard gameBoard;
 	
 	protected void setUp() throws Exception {
 		gameBoard = new GameBoard();
@@ -21,7 +21,7 @@ public class GameboardTest extends TestCase {
 	}
 	
 	public void testCellsForMonopoly() {
-		GameBoard gb = new SimpleGameBoard();
+		IOwnableGameBoard gb = new SimpleGameBoard();
 		PropertyCell[] properties = gb.getPropertiesInMonopoly("blue");
 		assertEquals("Blue 1", properties[0].getName());
 		assertEquals("Blue 2", properties[1].getName());

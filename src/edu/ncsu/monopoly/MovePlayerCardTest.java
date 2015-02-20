@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class MovePlayerCardTest extends TestCase {
     GameMaster gameMaster;
-    Card movePlayerCard;
+    IOwnableCard movePlayerCard;
     
     protected void setUp() {
 		gameMaster = GameMaster.instance();
@@ -21,10 +21,10 @@ public class MovePlayerCardTest extends TestCase {
     }
     
     public void testMovePlayerCardAction() {
-		Card card = gameMaster.drawCCCard();
+		IOwnableCard card = gameMaster.drawCCCard();
 		assertEquals(movePlayerCard, card);
 		card.applyAction();
-		IOwnable cell = gameMaster.getCurrentPlayer().getPosition();
+		IOwnableCell cell = gameMaster.getCurrentPlayer().getPosition();
 		assertEquals(gameMaster.getGameBoard().queryCell("Blue 1"), cell);
     }
     
@@ -34,7 +34,7 @@ public class MovePlayerCardTest extends TestCase {
         assertFalse(gameMaster.getGUI().isEndTurnButtonEnabled());
         gameMaster.btnDrawCardClicked();
         assertFalse(gameMaster.getGUI().isDrawCardButtonEnabled());
-		IOwnable cell = gameMaster.getCurrentPlayer().getPosition();
+		IOwnableCell cell = gameMaster.getCurrentPlayer().getPosition();
 		assertEquals(gameMaster.getGameBoard().queryCell("Blue 1"), cell);
 		assertTrue(gameMaster.getGUI().isEndTurnButtonEnabled());
 		assertEquals(1700, gameMaster.getCurrentPlayer().getMoney());

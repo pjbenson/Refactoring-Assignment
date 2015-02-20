@@ -12,20 +12,20 @@ public class Player {
 	private int money;
 	private String name;
 
-	private IOwnable position;
+	private IOwnableCell position;
 	private ArrayList properties = new ArrayList();
 	private ArrayList railroads = new ArrayList();
 	private ArrayList utilities = new ArrayList();
 	
 	public Player() {
-		GameBoard gb = GameMaster.instance().getGameBoard();
+		IOwnableGameBoard gb = GameMaster.instance().getGameBoard();
 		inJail = false;
 		if(gb != null) {
 			position = gb.queryCell("Go");
 		}
 	}
 
-    public void buyProperty(IOwnable property, int amount) {
+    public void buyProperty(IOwnableCell property, int amount) {
         property.setOwner(this);
         if(property instanceof PropertyCell) {
             PropertyCell cell = (PropertyCell)property;
@@ -55,7 +55,7 @@ public class Player {
 
 	public boolean checkProperty(String property) {
 		for(int i=0;i<properties.size();i++) {
-			IOwnable cell = (IOwnable)properties.get(i);
+			IOwnableCell cell = (IOwnableCell)properties.get(i);
 			if(cell.getName().equals(property)) {
 				return true;
 			}
@@ -82,12 +82,12 @@ public class Player {
 		properties.clear();
 	}
     
-    public IOwnable[] getAllProperties() {
+    public IOwnableCell[] getAllProperties() {
         ArrayList list = new ArrayList();
         list.addAll(properties);
         list.addAll(utilities);
         list.addAll(railroads);
-        return (IOwnable[])list.toArray(new IOwnable[list.size()]);
+        return (IOwnableCell[])list.toArray(new IOwnableCell[list.size()]);
     }
 
 	public int getMoney() {
@@ -101,7 +101,7 @@ public class Player {
 			String color = (String)colors.nextElement();
             if(!(color.equals(RailRoadCell.COLOR_GROUP)) && !(color.equals(UtilityCell.COLOR_GROUP))) {
     			Integer num = (Integer)colorGroups.get(color);
-    			GameBoard gameBoard = GameMaster.instance().getGameBoard();
+    			IOwnableGameBoard gameBoard = GameMaster.instance().getGameBoard();
     			if(num.intValue() == gameBoard.getPropertyNumberForColor(color)) {
     				monopolies.add(color);
     			}
@@ -124,7 +124,7 @@ public class Player {
 		GameMaster.instance().updateGUI();
 	}
 
-	public IOwnable getPosition() {
+	public IOwnableCell getPosition() {
 		return this.position;
 	}
 	
@@ -177,7 +177,7 @@ public class Player {
 	
 	public void purchase() {
 		if(getPosition().isAvailable()) {
-			IOwnable c = getPosition();
+			IOwnableCell c = getPosition();
 			c.setAvailable(false);
 			if(c instanceof PropertyCell) {
 				PropertyCell cell = (PropertyCell)c;
@@ -195,7 +195,7 @@ public class Player {
 	}
 	
 	public void purchaseHouse(String selectedMonopoly, int houses) {
-		GameBoard gb = GameMaster.instance().getGameBoard();
+		IOwnableGameBoard gb = GameMaster.instance().getGameBoard();
 		PropertyCell[] cells = gb.getPropertiesInMonopoly(selectedMonopoly);
 		if((money >= (cells.length * (cells[0].getHousePrice() * houses)))) {
 			for(int i = 0; i < cells.length; i++) {
@@ -221,7 +221,7 @@ public class Player {
 	    buyProperty(cell, cell.getPrice());
 	}
 
-    public void sellProperty(IOwnable property, int amount) {
+    public void sellProperty(IOwnableCell property, int amount) {
         property.setOwner(null);
         if(property instanceof PropertyCell) {
             properties.remove(property);
@@ -247,7 +247,7 @@ public class Player {
 		this.name = name;
 	}
 
-	public void setPosition(IOwnable newPosition) {
+	public void setPosition(IOwnableCell newPosition) {
 		this.position = newPosition;
 	}
 
